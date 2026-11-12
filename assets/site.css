@@ -57,12 +57,13 @@ h2{font-size:24px;line-height:1.4;margin:4px 0 20px;text-wrap:balance}
 .name .dot{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center}
 .hero h1{font-size:clamp(34px,8vw,56px);line-height:1.25;letter-spacing:.01em;margin:22px 0 14px;font-weight:800}
 .hero h1 em{font-style:normal;color:var(--accent)}
+.hero-sub{font-size:clamp(17px,3.6vw,22px);font-weight:700;line-height:1.6;margin:-4px 0 14px;text-wrap:balance}
 .lead{max-width:34em;margin:0 auto;color:var(--muted);font-size:16px}
 .stats{display:flex;gap:10px;margin:28px auto 0;padding:0;list-style:none;max-width:420px}
 .stats li{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 8px}
 .stats b{display:block;font-size:22px;line-height:1.3}
 .stats span{font-size:12px;color:var(--muted)}
-.hero .btn-line{margin-top:28px}
+.hero .btn-line,.hero .btn-soon{margin-top:28px}
 .home-page{--app:var(--accent)}
 .apps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;list-style:none;padding:0;margin:0}
 @media (max-width:640px){.apps{grid-template-columns:1fr}}
@@ -230,6 +231,15 @@ h2{font-size:24px;line-height:1.4;margin:4px 0 20px;text-wrap:balance}
 .brand-grid p{font-size:15px;margin:0 0 10px}
 .brand-tree{margin:0}
 .tree{width:100%;max-width:400px;display:block;margin:0 auto}
+.tree3d{position:relative;width:100%;max-width:400px;margin:0 auto;aspect-ratio:400/320}
+.tree3d .tree{position:absolute;inset:0;height:100%}
+.tree3d-stage,.tree3d-ov{position:absolute;inset:0;width:100%;height:100%;display:none}
+.tree3d-stage{cursor:grab;touch-action:pan-y}
+.tree3d-stage:active{cursor:grabbing}
+.tree3d-stage canvas{display:block;width:100%;height:100%}
+.tree3d-ov{pointer-events:none;overflow:visible}
+.tree3d.is-3d .tree{display:none}
+.tree3d.is-3d .tree3d-stage,.tree3d.is-3d .tree3d-ov{display:block}
 .t-pins{stroke:var(--muted)}
 .t-dots circle{fill:var(--ink)}
 .t-label text{font-family:var(--font);font-size:15px;font-weight:800;fill:var(--ink)}
