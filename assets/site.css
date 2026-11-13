@@ -55,14 +55,14 @@ h2{font-size:24px;line-height:1.4;margin:4px 0 20px;text-wrap:balance}
     radial-gradient(30% 40% at 55% 70%,var(--glow3),transparent 70%);filter:blur(10px)}
 .name{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px 14px 4px 6px}
 .name .dot{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center}
-.hero h1{font-size:clamp(34px,8vw,56px);line-height:1.25;letter-spacing:.01em;margin:22px 0 14px;font-weight:800}
+.hero h1{font-size:clamp(26px,9vw,56px);line-height:1.25;letter-spacing:.01em;margin:22px 0 14px;font-weight:800}
 .hero h1 em{font-style:normal;color:var(--accent)}
 .hero-sub{font-size:clamp(17px,3.6vw,22px);font-weight:700;line-height:1.6;margin:-4px 0 14px;text-wrap:balance}
 .lead{max-width:34em;margin:0 auto;color:var(--muted);font-size:16px}
 .stats{display:flex;gap:10px;margin:28px auto 0;padding:0;list-style:none;max-width:420px}
 .stats li{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 8px}
 .stats b{display:block;font-size:22px;line-height:1.3}
-.stats span{font-size:12px;color:var(--muted)}
+.stats span{display:block;font-size:12px;line-height:1.45;color:var(--muted)}
 .hero .btn-line,.hero .btn-soon{margin-top:28px}
 .home-page{--app:var(--accent)}
 .apps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;list-style:none;padding:0;margin:0}
@@ -74,7 +74,7 @@ h2{font-size:24px;line-height:1.4;margin:4px 0 20px;text-wrap:balance}
 .app h3{font-size:17px;margin:14px 0 4px;line-height:1.45}
 .app p{font-size:14px;color:var(--muted);margin:0;flex:1}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 0;padding:0;list-style:none}
-.chips li{font-size:11px;background:var(--chip);border-radius:999px;padding:2px 10px;color:var(--muted)}
+.chips li{font-size:12px;background:var(--chip);border-radius:999px;padding:2px 10px;color:var(--muted)}
 .app .app-head{color:inherit;text-decoration:none;display:block}
 .app .app-head:hover h3{color:var(--c)}
 .app .app-head img{transition:transform .15s ease}
@@ -249,3 +249,71 @@ h2{font-size:24px;line-height:1.4;margin:4px 0 20px;text-wrap:balance}
 .values b{display:block;font-size:17px;color:var(--accent)}
 .values span{font-size:12px;color:var(--muted);line-height:1.5;display:block}
 @media (max-width:760px){.brand-grid{grid-template-columns:1fr;padding:24px}.values{grid-template-columns:repeat(2,minmax(0,1fr))}.values li:last-child{grid-column:1/-1}}
+
+/* ホーム：名前の由来は、見たい人だけ開く（2026-11-13） */
+.brand-more{background:var(--surface);border:1px solid var(--line);border-radius:20px}
+.brand-more>summary{list-style:none;cursor:pointer;display:flex;flex-direction:column;gap:2px;padding:18px 52px 18px 22px;position:relative}
+.brand-more>summary::-webkit-details-marker{display:none}
+.brand-more>summary::after{content:"＋";position:absolute;right:20px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-weight:700}
+.brand-more[open]>summary::after{content:"－"}
+.bm-title{font-weight:700}
+.bm-sub{font-size:13px;color:var(--muted)}
+.brand-more .brand-grid{border:0;border-top:1px solid var(--line);border-radius:0;background:transparent}
+.brand-more .values{padding:0 22px 22px}
+
+/* ホーム：アプリの一覧を横に流す（ゆっくり一定の速さで流れ続け、最後のあとにまた最初が来る。スワイプもできる。2026-11-13） */
+.apps.apps-rail{display:flex;gap:16px;overflow-x:auto;padding:4px 2px 14px;margin:0 -2px;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 28px),transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 28px,#000 calc(100% - 28px),transparent 100%)}
+.apps.apps-rail::-webkit-scrollbar{display:none}
+.apps-rail>.app{flex:0 0 min(340px,84%)}
+.apps-rail>.app:hover{transform:none}
+
+/* ホーム：レビューの書き方はふだん閉じておく（押したら開く。2026-11-13 本人） */
+.rv-more .rv-body{border-top:1px solid var(--line);padding:18px 22px 22px}
+.rv-more .rv-body>:first-child{margin-top:0}
+#review{padding-top:0}
+/* レビューの書き方の枠を目立たせる（緑のふち・うすい緑の地・★。2026-11-13 本人） */
+.rv-more{border:2px solid var(--accent)}
+.rv-more>summary{background:var(--accent-soft);border-radius:18px}
+.rv-more[open]>summary{border-radius:18px 18px 0 0}
+.rv-more>summary .bm-title{font-size:17px;color:var(--accent);display:flex;align-items:center;gap:8px}
+.rv-more>summary::after{background:var(--accent);color:var(--bg)}
+.rv-star{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--bg);font-size:15px;flex:none}
+/* 作っている人：本名（2026-11-13 本人） */
+.about .maker-name{font-size:20px;font-weight:800;margin:2px 0 0;letter-spacing:.04em}
+/* 作っている人・Q&A も閉じておく（押したら開く。2026-11-13 本人） */
+#about{padding-bottom:6px}#klado{padding-top:6px;padding-bottom:6px}#faq{padding-top:6px}
+.about.about-in{border:0;border-top:1px solid var(--line);border-radius:0;background:transparent}
+.qa-list{border-top:1px solid var(--line);padding:6px 22px 18px}
+.qa{padding:14px 0;border-bottom:1px solid var(--line)}
+.qa:last-child{border-bottom:0}
+.qa p{margin:0;display:flex;gap:8px;font-size:15px}
+.qa b{flex:none;color:var(--accent)}
+.qa-q{font-weight:700;margin-bottom:6px!important}
+.qa-a{color:var(--muted)}
+/* 作っている人：歩み（2026-11-13 本人「もうちょっと書きたい」） */
+.maker-tl{list-style:none;margin:14px 0 0;padding:0;border-left:2px solid var(--accent-soft)}
+.maker-tl li{position:relative;padding:0 0 12px 18px;display:flex;flex-direction:column;gap:2px;font-size:14px}
+.maker-tl li:last-child{padding-bottom:0}
+.maker-tl li::before{content:"";position:absolute;left:-6px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.maker-tl b{color:var(--accent);font-size:13px}
+.maker-tl span{color:var(--muted)}
+/* どんな機種でも折り返しが変にならないように（2026-11-13 本人）：.kp は <wbr> の所でだけ折る。h は行の長さをそろえる */
+.kp{word-break:keep-all;overflow-wrap:anywhere}
+h1,h2,h3,.bm-title{text-wrap:balance}
+.nw{white-space:nowrap}
+/* 価値観の前に見出し（どこから来たか分かるように。2026-11-13 本人） */
+.values-head{padding:0 22px;margin-top:4px;text-align:center}
+.values-head .eyebrow{margin:0 0 2px}
+.values-head h3{margin:0 0 12px;font-size:17px}
+/* レビューのお願いを目立たせる（レビューの書き方の枠と同じ緑。2026-11-13 本人） */
+.ask-review{display:flex;gap:14px;align-items:flex-start;margin-top:18px;padding:18px 20px;border:2px solid var(--accent);background:var(--accent-soft);border-radius:18px}
+.ask-review>div{min-width:0}
+.ask-star{width:36px;height:36px;font-size:18px;margin-top:2px}
+.ask-title{margin:0 0 4px;font-weight:800;font-size:17px;color:var(--accent)}
+.ask-review p{margin:0;font-size:14px}
+.ask-btn{display:inline-block;margin-top:12px;padding:8px 16px;border-radius:999px;background:var(--accent);color:var(--bg);font-weight:700;font-size:14px;text-decoration:none}
+.ask-btn:hover{filter:brightness(1.08)}
+.ask-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+/* 段落の最後の行に1〜2字だけ残らないように（対応しているブラウザだけ効く） */
+p{text-wrap:pretty}
