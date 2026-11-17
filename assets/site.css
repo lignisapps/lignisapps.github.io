@@ -321,3 +321,10 @@ h1,h2,h3,.bm-title{text-wrap:balance}
 .ask-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 /* 段落の最後の行に1〜2字だけ残らないように（対応しているブラウザだけ効く） */
 p{text-wrap:pretty}
+
+/* ホーム：流れる帯の下の「すべてのアプリを一覧で見る」（2026-11-18） */
+.all-apps{text-align:center;margin:18px 0 0}
+.all-apps a{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:15px;color:var(--ink);text-decoration:none;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:10px 22px;transition:border-color .15s,color .15s}
+.all-apps a span{color:var(--accent);transition:transform .15s}
+.all-apps a:hover{border-color:var(--accent);color:var(--accent)}
+.all-apps a:hover span{transform:translateX(4px)}

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>アプリ一覧｜KLADO</title>
+<meta name="description" content="KLADO が作ったiPhoneアプリの一覧です。暮らし・からだ・学ぶ・あそぶ。公開中と、もうすぐ公開のアプリ。">
+<link rel="canonical" href="https://klado.jp/apps/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://klado.jp/apps/">
+<meta property="og:title" content="アプリ一覧｜KLADO">
+<meta property="og:description" content="KLADO が作ったiPhoneアプリの一覧です。暮らし・からだ・学ぶ・あそぶ。公開中と、もうすぐ公開のアプリ。">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+.apps-hero{padding:56px 0 30px}
+.apps-hero h1{margin:18px 0 10px}
+.apps-tools{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:12px 0}
+.afilter{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0;padding:2px 0}
+.afilter::-webkit-scrollbar{display:none}
+.afilter button{flex:none;font:inherit;font-size:14px;font-weight:700;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+.afilter button small{font-size:11px;background:var(--chip);border-radius:999px;padding:0 7px;line-height:1.7}
+.afilter button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.afilter button[aria-pressed=true] small{background:color-mix(in srgb,var(--bg) 22%,transparent);color:var(--bg)}
+.applist{list-style:none;padding:0;margin:28px 0 0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (max-width:860px){.applist{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.applist{grid-template-columns:1fr}}
+@media (prefers-color-scheme:dark){.acard{--c:var(--cd)!important}.ac-more,.ac-badge{color:#0F1211}}
+.acard{position:relative;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:24px 22px 20px;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.acard::before{content:"";position:absolute;inset:-60px -40px auto auto;width:220px;height:220px;border-radius:50%;background:var(--c);opacity:.16;filter:blur(40px);z-index:-1;transition:opacity .2s}
+.acard:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--c) 55%,var(--line));box-shadow:0 18px 40px -18px color-mix(in srgb,var(--c) 60%,transparent)}
+.acard:hover::before{opacity:.28}
+.acard[hidden]{display:none}
+.ac-head{color:inherit;text-decoration:none;display:block}
+.ac-head img{width:88px;height:88px;border-radius:22px;border:1px solid var(--line);box-shadow:0 10px 24px -10px color-mix(in srgb,var(--c) 70%,transparent);transition:transform .2s}
+.acard:hover .ac-head img{transform:scale(1.05) rotate(-2deg)}
+.ac-top{position:absolute;top:22px;right:20px;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.ac-badge{font-size:11px;font-weight:800;letter-spacing:.04em;color:#fff;background:var(--c);border-radius:999px;padding:3px 10px}
+.ac-badge.soon{background:transparent;color:var(--c);border:1px dashed var(--c)}
+.ac-date{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.acard h3{font-size:19px;line-height:1.4;margin:16px 0 2px}
+.ac-head:hover h3{color:var(--c)}
+.ac-kind{font-size:13px;font-weight:700;color:var(--c);margin:0}
+.ac-desc{font-size:14px;color:var(--muted);margin:10px 0 0;flex:1}
+.ac-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.ac-cat{font-size:12px;color:var(--muted)}
+.ac-links{display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700}
+.ac-more{background:var(--c);color:#fff;text-decoration:none;border-radius:999px;padding:6px 16px}
+.ac-more:hover{filter:brightness(1.08)}
+.ac-ext{color:var(--muted);text-decoration:none}
+.ac-ext:hover{color:var(--ink);text-decoration:underline}
+.apps-empty{text-align:center;color:var(--muted);margin:30px 0 0}
+.apps-cta{margin:56px 0 0;text-align:center;background:var(--surface);border:1px solid var(--line);border-radius:28px;padding:36px 22px;position:relative;overflow:hidden;isolation:isolate}
+.apps-cta::before{content:"";position:absolute;inset:auto -10% -60% -10%;height:120%;z-index:-1;background:radial-gradient(40% 60% at 50% 100%,var(--glow1),transparent 70%)}
+.apps-cta h2{margin:6px 0 8px}
+.apps-cta p{color:var(--muted);margin:0 auto 20px;max-width:30em}
+.apps-cta .btn{background:var(--accent);color:#fff}
+@media (prefers-reduced-motion:reduce){.acard,.acard::before,.ac-head img{transition:none}.acard:hover{transform:none}}
+</style>
+</head>
+<body class="home-page apps-page">
+<div class="wrap topbar"><a class="home home-pill" href="../"><span class="back" aria-hidden="true">←</span><span class="dot">K</span>KLADO のホームへ</a></div>
+<header class="hero apps-hero">
+  <div class="wrap">
+    <p class="eyebrow">APPS</p>
+    <h1>KLADO の<em>アプリ</em></h1>
+    <p class="hero-sub">暮らしの「ちょっと不便」から、<wbr>芽吹いたアプリたち。</p>
+    <ul class="stats">
+      <li><b>5本</b><span class="kp">公開中</span></li>
+      <li><b>2本</b><span class="kp">もうすぐ公開</span></li>
+      <li><b>iPhone</b><span class="kp">Android は<wbr>準備中</span></li>
+    </ul>
+  </div>
+</header>
+<div class="apps-tools"><div class="wrap"><div class="afilter" role="group" aria-label="アプリをしぼりこむ"><button type="button" data-f="all" aria-pressed="true">すべて<small>7</small></button><button type="button" data-f="暮らし" aria-pressed="false">暮らし<small>2</small></button><button type="button" data-f="からだ" aria-pressed="false">からだ<small>3</small></button><button type="button" data-f="学ぶ" aria-pressed="false">学ぶ<small>1</small></button><button type="button" data-f="あそぶ" aria-pressed="false">あそぶ<small>1</small></button><button type="button" data-f="soon" aria-pressed="false">もうすぐ<small>2</small></button></div></div></div>
+<main class="wrap">
+  <ul class="applist" id="applist">
+      <li class="acard" data-cat="学ぶ" data-status="live" style="--c:#D9731A;--cd:#F2A35A">
+        <a class="ac-head" href="../morse/"><img src="../img/morse-icon.jpg" alt="" width="88" height="88" loading="lazy"><span class="ac-top"><span class="ac-badge">公開中</span><span class="ac-date">2026.11.13</span></span><h3>トンツー道場</h3><p class="ac-kind">欧文・和文のモールス練習アプリ</p></a>
+        <p class="ac-desc">アマチュア無線のCWを始めたい人のための、欧文・和文のモールス練習。聞く・打つ・マイクで聞き取る。</p>
+        <div class="ac-foot"><span class="ac-cat">#学ぶ</span><span class="ac-links"><a class="ac-more" href="../morse/">詳しく見る</a><a class="ac-ext" href="https://apps.apple.com/jp/app/id6833970714">App Store ↗</a></span></div>
+      </li>
+      <li class="acard" data-cat="からだ" data-status="live" style="--c:#C2412D;--cd:#F2876F">
+        <a class="ac-head" href="../waza/"><img src="../img/waza-icon.jpg" alt="" width="88" height="88" loading="lazy"><span class="ac-top"><span class="ac-badge">公開中</span><span class="ac-date">2026.11.11</span></span><h3>技くらべ</h3><p class="ac-kind">格闘技・武道のフォームを動画で比べるアプリ</p></a>
+        <p class="ac-desc">格闘技・武道の技の動画を、並べて・重ねて・スローで見比べ。骨格の線と3Dで、お手本との違いが分かります。</p>
+        <div class="ac-foot"><span class="ac-cat">#からだ</span><span class="ac-links"><a class="ac-more" href="../waza/">詳しく見る</a><a class="ac-ext" href="https://apps.apple.com/jp/app/id6833363759">App Store ↗</a></span></div>
+      </li>
+      <li class="acard" data-cat="暮らし" data-status="live" style="--c:#13809C;--cd:#5CC6E0">
+        <a class="ac-head" href="../wareki/"><img src="../img/wareki-icon.jpg" alt="" width="88" height="88" loading="lazy"><span class="ac-top"><span class="ac-badge">公開中</span><span class="ac-date">2026.11.07</span></span><h3>年齢・和暦早見表</h3><p class="ac-kind">西暦・和暦・年齢の早見表アプリ</p></a>
+        <p class="ac-desc">西暦・和暦・年齢・干支・厄年が一目で分かる早見表。ペットの年齢を人間の年齢に直す計算も。</p>
+        <div class="ac-foot"><span class="ac-cat">#暮らし</span><span class="ac-links"><a class="ac-more" href="../wareki/">詳しく見る</a><a class="ac-ext" href="https://apps.apple.com/jp/app/id6831988013">App Store ↗</a></span></div>
+      </li>
+      <li class="acard" data-cat="からだ" data-status="live" style="--c:#4E6B24;--cd:#A6C96A">
+        <a class="ac-head" href="../tairyoku/"><img src="../img/tairyoku-icon.jpg" alt="" width="88" height="88" loading="lazy"><span class="ac-top"><span class="ac-badge">公開中</span><span class="ac-date">2026.11.07</span></span><h3>体力検定トレーナー</h3><p class="ac-kind">腕立て伏せ・腹筋・3000m走の練習アプリ</p></a>
+        <p class="ac-desc">腕立て伏せ・腹筋・3000m走の練習と記録に。前回の記録と「目標まであと何回」がひと目で分かります。</p>
+        <div class="ac-foot"><span class="ac-cat">#からだ</span><span class="ac-links"><a class="ac-more" href="../tairyoku/">詳しく見る</a><a class="ac-ext" href="https://apps.apple.com/jp/app/id6831956818">App Store ↗</a></span></div>
+      </li>
+      <li class="acard" data-cat="からだ" data-status="live" style="--c:#0A7A5C;--cd:#4FD1A5">
+        <a class="ac-head" href="../junalcohol/"><img src="../img/junalcohol-icon.jpg" alt="" width="88" height="88" loading="lazy"><span class="ac-top"><span class="ac-badge">公開中</span><span class="ac-date">2026.11.06</span></span><h3>純アルコール手帳</h3><p class="ac-kind">iPhoneの飲酒記録アプリ</p></a>
+        <p class="ac-desc">押すだけで、飲んだお酒を純アルコールのグラムで記録。今日・今週の量や休肝日がひと目で分かります。</p>
+        <div class="ac-foot"><span class="ac-cat">#からだ</span><span class="ac-links"><a class="ac-more" href="../junalcohol/">詳しく見る</a><a class="ac-ext" href="https://apps.apple.com/jp/app/id6830692095">App Store ↗</a></span></div>
+      </li>
+      <li class="acard" data-cat="暮らし" data-status="soon" style="--c:#E86119;--cd:#FF8F4C">
+        <a class="ac-head" href="../teichi/"><img src="../img/teichi-icon.jpg" alt="" width="88" height="88" loading="lazy"><span class="ac-top"><span class="ac-badge soon">もうすぐ公開</span></span><h3>底値ジャッジ</h3><p class="ac-kind">レシートで記録、売り場で安いか判定</p></a>
+        <p class="ac-desc">レシートを撮るだけで、買った値段を記録。売り場で値段を打てば、いつもの底値より安いか高いかがすぐ分かります。</p>
+        <div class="ac-foot"><span class="ac-cat">#暮らし</span><span class="ac-links"><a class="ac-more" href="../teichi/">詳しく見る</a></span></div>
+      </li>
+      <li class="acard" data-cat="あそぶ" data-status="soon" style="--c:#A87B22;--cd:#E0B862">
+        <a class="ac-head" href="../hitofude/"><img src="../img/hitofude-icon.jpg" alt="" width="88" height="88" loading="lazy"><span class="ac-top"><span class="ac-badge soon">もうすぐ公開</span></span><h3>ひと筆スイッチ</h3><p class="ac-kind">光る点で道がひらく一筆書きパズル</p></a>
+        <p class="ac-desc">指を離さずに、全部の点を一筆でつなぐパズル。金色の点を通ると、閉じていた道がひらきます。60面と毎日の1問。</p>
+        <div class="ac-foot"><span class="ac-cat">#あそぶ</span><span class="ac-links"><a class="ac-more" href="../hitofude/">詳しく見る</a></span></div>
+      </li>
+  </ul>
+  <p class="apps-empty" id="apps-empty" hidden>このしぼりこみのアプリは、まだありません。</p>
+  <section class="apps-cta">
+    <p class="eyebrow">YOUR IDEA</p>
+    <h2>「こんなアプリがあったらいいな」<wbr>はありませんか？</h2>
+    <p>届いたアイデアから、毎月みんなで選んで作っています。</p>
+    <a class="btn" href="../#how">アイデアの送り方を見る</a>
+  </section>
+</main>
+<footer class="footer wrap"><nav><a href="../">KLADO のホーム</a> · <a href="../tokushoho.html">特定商取引法に基づく表記</a></nav><p>© 2026 KLADO</p></footer>
+<script>
+(function(){
+  var btns=[].slice.call(document.querySelectorAll('.afilter button')),cards=[].slice.call(document.querySelectorAll('.acard')),empty=document.getElementById('apps-empty');
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    var f=b.getAttribute('data-f'),n=0;
+    btns.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+    cards.forEach(function(c){var ok=f==='all'||(f==='soon'?c.getAttribute('data-status')==='soon':c.getAttribute('data-cat')===f);c.hidden=!ok;if(ok)n++;});
+    empty.hidden=n>0;
+  });});
+})();
+</script>
+</body>
+</html>
