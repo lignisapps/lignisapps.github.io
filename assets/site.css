@@ -285,12 +285,16 @@ h2{font-size:24px;line-height:1.4;margin:4px 0 20px;text-wrap:balance}
 #about{padding-bottom:6px}#klado{padding-top:6px;padding-bottom:6px}#faq{padding-top:6px}
 .about.about-in{border:0;border-top:1px solid var(--line);border-radius:0;background:transparent}
 .qa-list{border-top:1px solid var(--line);padding:6px 22px 18px}
-.qa{padding:14px 0;border-bottom:1px solid var(--line)}
+.qa{border-bottom:1px solid var(--line)}
 .qa:last-child{border-bottom:0}
 .qa p{margin:0;display:flex;gap:8px;font-size:15px}
 .qa b{flex:none;color:var(--accent)}
-.qa-q{font-weight:700;margin-bottom:6px!important}
-.qa-a{color:var(--muted)}
+/* 問いを押した時だけ答えを出す（2026-11-17 本人） */
+.qa-q{list-style:none;cursor:pointer;display:flex;gap:8px;font-size:15px;font-weight:700;padding:14px 34px 14px 0;position:relative}
+.qa-q::-webkit-details-marker{display:none}
+.qa-q::after{content:"＋";position:absolute;right:0;top:50%;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:700}
+.qa[open]>.qa-q::after{content:"－"}
+.qa-a{color:var(--muted);padding:0 0 14px}
 /* 作っている人：歩み（2026-11-13 本人「もうちょっと書きたい」） */
 .maker-tl{list-style:none;margin:14px 0 0;padding:0;border-left:2px solid var(--accent-soft)}
 .maker-tl li{position:relative;padding:0 0 12px 18px;display:flex;flex-direction:column;gap:2px;font-size:14px}
