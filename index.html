@@ -10,13 +10,15 @@
 <meta property="og:url" content="https://klado.jp/">
 <meta property="og:title" content="KLADO｜アプリ開発">
 <meta property="og:description" content="可能性を育て、価値を創造する。KLADO は「こんなアプリがあったらいいな」をLINEで受け付けて、小さなスマホアプリにしています。">
-<link rel="stylesheet" href="assets/site.css?v=20261118a">
+<link rel="stylesheet" href="assets/site.css?v=20261120a">
 
 </head>
 <body class="home-page">
+<script>document.documentElement.classList.add("grow-js");setTimeout(function(){var h=document.querySelector(".hero");if(h&&!h.classList.contains("tree-on"))h.classList.add("no-tree")},2500)</script>
 
 <header class="hero">
   <div class="wrap">
+    <div class="grow" data-grow data-apps='[[&quot;teichi&quot;, &quot;img/teichi-icon.jpg&quot;, &quot;底値ジャッジ&quot;], [&quot;hitofude&quot;, &quot;img/hitofude-icon.jpg&quot;, &quot;ひと筆スイッチ&quot;], [&quot;morse&quot;, &quot;img/morse-icon.jpg&quot;, &quot;トンツー道場&quot;], [&quot;waza&quot;, &quot;img/waza-icon.jpg&quot;, &quot;技くらべ&quot;], [&quot;wareki&quot;, &quot;img/wareki-icon.jpg&quot;, &quot;年齢・和暦早見表&quot;], [&quot;tairyoku&quot;, &quot;img/tairyoku-icon.jpg&quot;, &quot;体力検定トレーナー&quot;], [&quot;junalcohol&quot;, &quot;img/junalcohol-icon.jpg&quot;, &quot;純アルコール手帳&quot;]]'><div class="grow-stage" role="img" aria-label="種から木が育ち、枝先に KLADO のアプリが実る絵。左右に指で動かせます"></div><p class="grow-hint" aria-hidden="true">← 指で動かせます →</p></div>
     <span class="name"><span class="dot">K</span>KLADO｜アプリ開発</span>
     <h1>アイデアの種から、<br><em>アプリが芽吹く</em>。</h1>
     <p class="hero-sub">まずは、手の届く人から。しあわせを、ひとつずつ。</p>
@@ -242,6 +244,7 @@
 </footer>
 
 <script type="module" src="assets/tree3d.js"></script>
+<script type="module" src="assets/hero-tree.js?v=20261120a"></script>
 <script>
 // アプリの一覧：ゆっくり一定の速さで横に流れ続ける。最後まで来たら最初のカードが続けて流れてくる（同じ並びを後ろに複製して、つなぎ目なく回す）。
 // 指やマウスでも動かせる。マウスを乗せている間・触ったあと3秒は止まる。動きを減らす設定の人には自動で流さない（2026-11-13 本人）
