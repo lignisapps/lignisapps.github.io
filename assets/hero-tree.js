@@ -69,7 +69,7 @@ function buildTree(R) {
       grow(a, nd, len * (0.72 + R() * 0.1), rEnd, depth + 1, s);
     }
   }
-  grow(new THREE.Vector3(0, -0.02, 0), UP.clone(), 0.8, 0.12, 0, 0);
+  grow(new THREE.Vector3(0, -0.02, 0), UP.clone(), 1.3, 0.14, 0, 0);   // 幹を長めに：画面いっぱいの縦に合わせる
   return { segs, clusters };
 }
 
@@ -99,7 +99,11 @@ function init(box) {
   const R = rng(20261120);
   const { segs, clusters } = buildTree(R);
   const Smax = Math.max(...segs.map((s) => s.s1));
-  const tOf = (s) => 1.15 + 2.7 * Math.pow(s / Smax, 0.85);   // 根元からの道のり → 伸びはじめる時刻（秒）
+  // 伸びの先（根元からの道のり）は、全体で1回だけゆっくり加速・減速して、切れ目なく進む
+  // （区切りごとに加速・減速すると「ギュンギュン」と脈打つ。2026-11-20 本人）
+  const G0 = 1.15, GD = 3.0;
+  const growFront = (t) => { const k = Math.min(1, Math.max(0, (t - G0) / GD)); return Smax * (1 - Math.cos(Math.PI * k)) / 2; };
+  const tOf = (s) => G0 + GD * Math.acos(1 - 2 * Math.min(1, s / Smax)) / Math.PI;   // 道のり s に伸びの先が届く時刻（秒）
 
   const tree = new THREE.Group(); scene.add(tree);
   const UP = new THREE.Vector3(0, 1, 0), M = new THREE.Matrix4(), S = new THREE.Vector3(), E = new THREE.Euler(), C = new THREE.Color(), v = new THREE.Vector3();
@@ -158,8 +162,9 @@ function init(box) {
     const r = stage.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height);
     renderer.setSize(W, H, false); camera.aspect = W / H;
     const tanV = Math.tan((camera.fov * Math.PI) / 360), elev = 0.12;
-    const D = Math.max((Ht / ((H - 40) / H)) / (2 * tanV), (crownR * 2 / 0.78) / (2 * tanV * camera.aspect));
-    const ty = ((H - 24 - H / 2) / (H / 2)) * D * tanV;
+    const wide = W >= 768, bottomPad = Math.min(wide ? 270 : 190, H * (wide ? 0.32 : 0.24)), topPad = 28, baseY = H - bottomPad;
+    const D = Math.max((Ht / ((baseY - topPad) / H)) / (2 * tanV), (crownR * 2 / (W < 600 ? 1.3 : 0.94)) / (2 * tanV * camera.aspect));   // スマホは樹冠を左右に少しはみ出させる
+    const ty = ((baseY - H / 2) / (H / 2)) * D * tanV;
     camera.position.set(0, ty + Math.sin(elev) * D, Math.cos(elev) * D); camera.lookAt(0, ty, 0);
     camera.updateProjectionMatrix(); camera.updateMatrixWorld();
   }
@@ -167,14 +172,15 @@ function init(box) {
 
   // 実：公開中のアプリを、手前側の枝先にぶら下げる。樹冠の中のねらった位置に一番近い枝先を選ぶ
   const scr = (p) => { const q = p.clone().project(camera); return [(q.x + 1) * W / 2, (1 - q.y) * H / 2]; };
-  const front = clusters.map((c, i) => [i, ...scr(c.p)]).filter(([i]) => clusters[i].p.z > 0.05);
+  const front = clusters.map((c, i) => [i, ...scr(c.p)]).filter(([i, x]) => clusters[i].p.z > 0.05 && x > 30 && x < W - 30);   // 画面の中に見える枝先だけ
   const xs = front.map((f) => f[1]), ys = front.map((f) => f[2]);
   const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
   const SPOTS = [[0.11, 0.58], [0.3, 0.32], [0.49, 0.2], [0.68, 0.32], [0.87, 0.57], [0.3, 0.8], [0.68, 0.79], [0.49, 0.55], [0.13, 0.86]];
   // 間をなるべく空ける。全部が載らない時は、間を少しずつ詰める
   const want = Math.min(apps.length, SPOTS.length);
   let picks = [];
-  for (const gap of [66, 60, 54, 48, 42]) {
+  const iconPx = window.innerWidth >= 768 ? 52 : window.innerWidth <= 480 ? 34 : 40;
+  for (const gap of [1.85, 1.65, 1.5, 1.35, 1.2, 1.05].map((x) => x * iconPx)) {
     const used = new Set(), placed = []; picks = [];
     apps.slice(0, want).forEach((app, k) => {
       const tx = x0 + (x1 - x0) * SPOTS[k][0], ty = y0 + (y1 - y0) * SPOTS[k][1];
@@ -224,13 +230,13 @@ function init(box) {
     if (!settled) {
       // 種：落ちて、はねて、土にもぐる
       if (t < 1.3) {
-        let y; if (t < 0.75) { const k = t / 0.75; y = 1.9 - 1.87 * k * k; } else if (t < 0.95) { const k = (t - 0.75) / 0.2; y = 0.03 + 0.09 * Math.sin(k * Math.PI); } else { y = 0.03 - 0.05 * ease((t - 0.95) / 0.35); }
+        let y; if (t < 0.75) { const k = t / 0.75; y = Ht + 0.3 - (Ht + 0.27) * k * k; } else if (t < 0.95) { const k = (t - 0.75) / 0.2; y = 0.03 + 0.09 * Math.sin(k * Math.PI); } else { y = 0.03 - 0.05 * ease((t - 0.95) / 0.35); }
         seed.visible = true; seed.position.set(0, y, 0); seed.rotation.z = t < 0.75 ? -0.6 + 0.6 * (t / 0.75) : 0;
       } else seed.visible = false;
       // 幹と枝：伸びながら、全体も太っていく
-      const thick = 0.35 + 0.65 * ease((t - 1.1) / 3.6);
+      const F = growFront(t), thick = 0.35 + 0.65 * Math.pow(F / Smax, 0.7);
       segs.forEach((s, i) => {
-        const g = ease((t - s.t0) / Math.max(0.12, s.t1 - s.t0));
+        const g = Math.min(1, Math.max(0, (F - s.s0) / (s.s1 - s.s0)));
         if (g <= 0) S.set(0, 0, 0); else S.set(s.r0 * thick, s.len * g, s.r0 * thick);
         M.compose(s.a, s.q, S); wood.setMatrixAt(i, M);
       });

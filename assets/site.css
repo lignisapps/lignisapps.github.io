@@ -330,14 +330,15 @@ p{text-wrap:pretty}
 .all-apps a:hover span{transform:translateX(4px)}
 
 /* ホームの最初の画面：種から育つ木（assets/hero-tree.js、2026-11-20） */
-.grow{position:relative;width:min(100%,520px);height:clamp(300px,86vw,420px);margin:-48px auto 6px}
+.grow{--gh:max(520px,min(100svh,920px));position:relative;width:100vw;height:var(--gh);margin:-72px calc(50% - 50vw) calc(-1 * min(190px,.24 * var(--gh)))}
+.hero .wrap>:not(.grow){position:relative;z-index:1}
 .grow-stage{position:absolute;inset:0}
 .grow-stage canvas{display:block;width:100%;height:100%;touch-action:pan-y;cursor:grab}
 .grow .fruit{position:absolute;left:0;top:0;width:40px;height:52px;margin:-12px 0 0 -20px;opacity:0;visibility:hidden;will-change:transform;-webkit-tap-highlight-color:transparent}
 .grow .fruit i{position:absolute;left:19px;top:0;width:2px;height:13px;background:#5a3d25;border-radius:1px}
 .grow .fruit b{position:absolute;left:21px;top:1px;width:11px;height:6px;background:#6dbb5a;border-radius:0 100% 0 100%;transform:rotate(-24deg)}
 .grow .fruit img{position:absolute;left:0;top:12px;width:40px;height:40px;border-radius:10px;box-shadow:0 5px 12px rgba(0,0,0,.35);transform-origin:50% -2px}
-.grow-hint{position:absolute;right:4px;top:4px;margin:0;font-size:11px;color:var(--muted);opacity:0;transition:opacity 1s ease 1.4s}
+.grow-hint{position:absolute;right:16px;top:16px;margin:0;font-size:11px;color:var(--muted);opacity:0;transition:opacity 1s ease 1.4s}
 .hero.tree-grown .grow-hint{opacity:.8}
 .grow-js .hero .wrap>:not(.grow){opacity:0;transform:translateY(8px);transition:opacity .9s ease,transform .9s ease}
 .grow-js .hero.tree-grown .wrap>:not(.grow),.grow-js .hero.no-tree .wrap>:not(.grow){opacity:1;transform:none}
@@ -346,3 +347,4 @@ p{text-wrap:pretty}
 .hero.no-tree .grow{display:none}
 @media (prefers-reduced-motion:reduce){.grow-js .hero .wrap>:not(.grow){opacity:1;transform:none}}
 @media (max-width:480px){.grow .fruit{width:34px;height:46px;margin:-12px 0 0 -17px}.grow .fruit i{left:16px}.grow .fruit b{left:18px}.grow .fruit img{width:34px;height:34px;border-radius:8px}}
+@media (min-width:768px){.grow{margin-bottom:calc(-1 * min(270px,.32 * var(--gh)))}.grow .fruit{width:52px;height:64px;margin:-12px 0 0 -26px}.grow .fruit i{left:25px}.grow .fruit b{left:27px}.grow .fruit img{width:52px;height:52px;border-radius:13px}}
