@@ -80,18 +80,19 @@ function init(box) {
   const apps = JSON.parse(box.dataset.apps || "[]");
   const stage = box.querySelector(".grow-stage");
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "low-power" });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  const phone = window.matchMedia("(pointer: coarse)").matches;   // スマホ・タブレットは軽くする（2026-11-20 本人「iPhone でカクカク」）
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: phone ? "default" : "low-power" });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, phone ? 1.5 : 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.15;
-  renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.enabled = true; renderer.shadowMap.type = phone ? THREE.PCFShadowMap : THREE.PCFSoftShadowMap;
   stage.appendChild(renderer.domElement);
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 60);
   scene.add(new THREE.HemisphereLight(0xe8f1ea, 0x3d3022, 1.35));
   const sun = new THREE.DirectionalLight(0xffeccc, 2.6);
-  sun.position.set(-2.8, 4.6, 2.2); sun.castShadow = true; sun.shadow.mapSize.set(1024, 1024);
+  sun.position.set(-2.8, 4.6, 2.2); sun.castShadow = true; sun.shadow.mapSize.set(phone ? 512 : 1024, phone ? 512 : 1024);
   Object.assign(sun.shadow.camera, { left: -2.4, right: 2.4, top: 3.6, bottom: -1 });
   sun.shadow.bias = -0.0008; sun.shadow.radius = 4; scene.add(sun);
 
@@ -129,10 +130,13 @@ function init(box) {
         old: new THREE.Color().setHSL(0.26 + R() * 0.06, 0.48 + R() * 0.16, 0.22 + outer * 0.2 + R() * 0.08) });
     }
   }
+  leafData.sort((a, b) => a.t - b.t);
   const leaves = new THREE.InstancedMesh(new THREE.PlaneGeometry(0.15, 0.095), leafMat, leafData.length);
   leaves.castShadow = leaves.receiveShadow = true;
   leaves.customDepthMaterial = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking, map: leafTex, alphaTest: 0.5 });
-  leaves.setColorAt(0, C); tree.add(leaves);
+  S.set(0, 0, 0); M.compose(new THREE.Vector3(), new THREE.Quaternion(), S);
+  for (let i = 0; i < leafData.length; i++) { leaves.setMatrixAt(i, M); leaves.setColorAt(i, leafData[i].young); }
+  tree.add(leaves);
 
   // 地面と影
   const gnd = new THREE.Mesh(new THREE.CircleGeometry(1.8, 48), new THREE.MeshBasicMaterial({ map: groundTexture(), transparent: true, depthWrite: false }));
@@ -141,8 +145,9 @@ function init(box) {
   sc.rotation.x = -Math.PI / 2; sc.position.y = 0.002; sc.receiveShadow = true; scene.add(sc);
 
   // 種
-  const seed = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 12), new THREE.MeshStandardMaterial({ color: 0x7a5532, roughness: 0.7 }));
-  seed.scale.set(0.03, 0.045, 0.03); seed.castShadow = true; scene.add(seed);
+  // 暗い画面でも見えるよう、明るめの殻の色で少し大きく、ほんのり自分でも光らせる（2026-11-20 本人「黒い画面で種がわかりにくい」）
+  const seed = new THREE.Mesh(new THREE.SphereGeometry(1, 16, 12), new THREE.MeshStandardMaterial({ color: 0xd9b07a, emissive: 0x5a3f22, roughness: 0.55 }));
+  seed.scale.set(0.042, 0.064, 0.042); seed.castShadow = true; scene.add(seed);
 
   // カメラ：木の根元を枠の下から 24px、木の高さ・樹冠の幅が枠に収まるように
   let Ht = 0; clusters.forEach((c) => (Ht = Math.max(Ht, c.p.y + 0.16)));
@@ -210,7 +215,7 @@ function init(box) {
 
   hero.classList.add("tree-on");
   const END = 5.6, T0 = performance.now();
-  let prev = T0, settled = false;
+  let prev = T0, settled = false, lo = 0, doneTo = 0, fno = 0;
   function frame(now) {
     requestAnimationFrame(frame);
     if (!visible) { prev = now; return; }
@@ -230,11 +235,21 @@ function init(box) {
         M.compose(s.a, s.q, S); wood.setMatrixAt(i, M);
       });
       wood.instanceMatrix.needsUpdate = true;
-      leafData.forEach((L, i) => {
-        const s = pop((t - L.t) / 0.45) * L.s; S.set(s, s, s); M.compose(L.p, L.q, S); leaves.setMatrixAt(i, M);
-        C.copy(L.young).lerp(L.old, ease((t - L.t - 0.3) / 1.6)); leaves.setColorAt(i, C);
-      });
-      leaves.instanceMatrix.needsUpdate = true; leaves.instanceColor.needsUpdate = true;
+      // 出はじめから色が変わり終わるまで（約2秒）の葉だけ直す。葉は出る順に並んでいるので、直す所はひと続き
+      while (lo < leafData.length && t > leafData[lo].t + 2.0) {   // 変わり終わった葉は、最後の形と色で止める
+        const L = leafData[lo]; S.set(L.s, L.s, L.s); M.compose(L.p, L.q, S); leaves.setMatrixAt(lo, M); leaves.setColorAt(lo, L.old); lo++;
+      }
+      let hi = lo;
+      for (; hi < leafData.length && leafData[hi].t <= t; hi++) {
+        const L = leafData[hi], s = pop((t - L.t) / 0.45) * L.s; S.set(s, s, s); M.compose(L.p, L.q, S); leaves.setMatrixAt(hi, M);
+        C.copy(L.young).lerp(L.old, ease((t - L.t - 0.3) / 1.6)); leaves.setColorAt(hi, C);
+      }
+      const a0 = Math.max(0, doneTo), n = hi - a0;
+      if (n > 0) {
+        leaves.instanceMatrix.clearUpdateRanges(); leaves.instanceMatrix.addUpdateRange(a0 * 16, n * 16); leaves.instanceMatrix.needsUpdate = true;
+        leaves.instanceColor.clearUpdateRanges(); leaves.instanceColor.addUpdateRange(a0 * 3, n * 3); leaves.instanceColor.needsUpdate = true;
+      }
+      doneTo = lo;
       if (t > 4.9) hero.classList.add("tree-grown");
       if (t > END + 1.2) settled = true;
     }
@@ -261,6 +276,8 @@ function init(box) {
       fall.rotation.set(k * 1.8, k * 1.1, Math.sin(k * 2.2) * 0.9);
       if (fall.position.y <= 0.012) { fall.rotation.set(-Math.PI / 2, 0, k); if (k > fallP.y / 0.28 + 2) { fall.visible = false; fallT = -1; } }
     }
+    fno++;
+    renderer.shadowMap.autoUpdate = !settled || fallT >= 0 || drag || fno % 3 === 0;
     renderer.render(scene, camera);
   }
   requestAnimationFrame(frame);
