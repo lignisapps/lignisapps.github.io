@@ -167,7 +167,7 @@ function init(box) {
     const textH = nm && sb ? sb.getBoundingClientRect().bottom - nm.getBoundingClientRect().top : 200;
     const bottomPad = Math.round(Math.min(textH + 20, H * 0.45)); box.style.marginBottom = `-${bottomPad}px`;
     const topPad = 28, baseY = H - bottomPad + 6;
-    const D = Math.max((Ht / ((baseY - topPad) / H)) / (2 * tanV), (crownR * 2 / (W < 600 ? 1.3 : 0.94)) / (2 * tanV * camera.aspect));   // スマホは樹冠を左右に少しはみ出させる
+    const D = Math.max((Ht / (((baseY - topPad) * 0.84) / H)) / (2 * tanV), (crownR * 2 / (W < 600 ? 0.98 : 0.76)) / (2 * tanV * camera.aspect));   // 2026-11-20 本人「大きすぎる」で一回り小さく：スマホは樹冠を画面の幅に収める、高さは空きの84%
     const ty = ((baseY - H / 2) / (H / 2)) * D * tanV;
     camera.position.set(0, ty + Math.sin(elev) * D, Math.cos(elev) * D); camera.lookAt(0, ty, 0);
     camera.updateProjectionMatrix(); camera.updateMatrixWorld();
