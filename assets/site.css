@@ -342,9 +342,21 @@ p{text-wrap:pretty}
 .hero.tree-grown .grow-hint{opacity:.8}
 .grow-js .hero .wrap>:not(.grow){opacity:0;transform:translateY(8px);transition:opacity .9s ease,transform .9s ease}
 .grow-js .hero.tree-grown .wrap>:not(.grow),.grow-js .hero.no-tree .wrap>:not(.grow){opacity:1;transform:none}
-.grow-js .hero.tree-grown .wrap>:nth-child(3){transition-delay:.15s}
-.grow-js .hero.tree-grown .wrap>:nth-child(n+4){transition-delay:.4s}
+.grow-js .hero.tree-grown .wrap>:nth-child(n+5){transition-delay:2.3s}
+/* 見出しと一言：1文字ずつ。種のように落ちる → 芽のように伸びる → ひとつずつ浮かぶ（2026-11-20） */
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.hero .ln{display:inline-block;white-space:nowrap}
+.hero .ch{display:inline-block}
+.grow-js .hero .wrap>h1,.grow-js .hero .wrap>.hero-sub{opacity:1;transform:none;transition:none}
+.grow-js .hero .ch{opacity:0}
+.grow-js .hero.tree-grown .ch,.grow-js .hero.no-tree .ch{animation:.62s cubic-bezier(.3,.7,.4,1) both}
+.grow-js .hero.tree-grown .drop,.grow-js .hero.no-tree .drop{animation-name:ch-drop;animation-delay:calc(var(--i) * 55ms)}
+.grow-js .hero.tree-grown .sprout,.grow-js .hero.no-tree .sprout{animation-name:ch-sprout;animation-duration:.8s;animation-delay:calc(.6s + var(--i) * 75ms);transform-origin:50% 100%}
+.grow-js .hero.tree-grown .one,.grow-js .hero.no-tree .one{animation-name:ch-one;animation-duration:.5s;animation-delay:calc(1.45s + var(--i) * 38ms)}
+@keyframes ch-drop{0%{opacity:0;transform:translateY(-.9em) rotate(-8deg)}55%{opacity:1;transform:translateY(.07em) rotate(2deg)}75%{transform:translateY(-.08em) rotate(0)}100%{opacity:1;transform:none}}
+@keyframes ch-sprout{0%{opacity:0;transform:scaleY(0) translateY(.15em)}55%{opacity:1;transform:scaleY(1.14) rotate(-4deg)}78%{transform:scaleY(.96) rotate(2deg)}100%{opacity:1;transform:none}}
+@keyframes ch-one{0%{opacity:0;transform:translateY(.4em)}100%{opacity:1;transform:none}}
 .hero.no-tree .grow{display:none}
-@media (prefers-reduced-motion:reduce){.grow-js .hero .wrap>:not(.grow){opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.grow-js .hero .wrap>:not(.grow){opacity:1;transform:none}.grow-js .hero .ch{opacity:1;animation:none!important}}
 @media (max-width:480px){.grow .fruit{width:34px;height:46px;margin:-12px 0 0 -17px}.grow .fruit i{left:16px}.grow .fruit b{left:18px}.grow .fruit img{width:34px;height:34px;border-radius:8px}}
 @media (min-width:768px){.grow{margin-bottom:calc(-1 * min(270px,.32 * var(--gh)))}.grow .fruit{width:52px;height:64px;margin:-12px 0 0 -26px}.grow .fruit i{left:25px}.grow .fruit b{left:27px}.grow .fruit img{width:52px;height:52px;border-radius:13px}}
