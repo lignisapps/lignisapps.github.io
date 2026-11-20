@@ -338,11 +338,9 @@ p{text-wrap:pretty}
 .grow .fruit i{position:absolute;left:19px;top:0;width:2px;height:13px;background:#5a3d25;border-radius:1px}
 .grow .fruit b{position:absolute;left:21px;top:1px;width:11px;height:6px;background:#6dbb5a;border-radius:0 100% 0 100%;transform:rotate(-24deg)}
 .grow .fruit img{position:absolute;left:0;top:12px;width:40px;height:40px;border-radius:10px;box-shadow:0 5px 12px rgba(0,0,0,.35);transform-origin:50% -2px}
-.grow-hint{position:absolute;right:16px;top:16px;margin:0;font-size:11px;color:var(--muted);opacity:0;transition:opacity 1s ease 1.4s}
-.hero.tree-grown .grow-hint{opacity:.8}
 .grow-js .hero .wrap>:not(.grow){opacity:0;transform:translateY(8px);transition:opacity .9s ease,transform .9s ease}
 .grow-js .hero.tree-grown .wrap>:not(.grow),.grow-js .hero.no-tree .wrap>:not(.grow){opacity:1;transform:none}
-.grow-js .hero.tree-grown .wrap>:nth-child(n+5){transition-delay:2.3s}
+.grow-js .hero.tree-grown .wrap>:nth-child(n+5){transition-delay:3s}
 /* 見出しと一言：1文字ずつ。種のように落ちる → 芽のように伸びる → ひとつずつ浮かぶ（2026-11-20） */
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .hero .ln{display:inline-block;white-space:nowrap}
@@ -350,11 +348,12 @@ p{text-wrap:pretty}
 .grow-js .hero .wrap>h1,.grow-js .hero .wrap>.hero-sub{opacity:1;transform:none;transition:none}
 .grow-js .hero .ch{opacity:0}
 .grow-js .hero.tree-grown .ch,.grow-js .hero.no-tree .ch{animation:.62s cubic-bezier(.3,.7,.4,1) both}
-.grow-js .hero.tree-grown .drop,.grow-js .hero.no-tree .drop{animation-name:ch-drop;animation-delay:calc(var(--i) * 55ms)}
-.grow-js .hero.tree-grown .sprout,.grow-js .hero.no-tree .sprout{animation-name:ch-sprout;animation-duration:.8s;animation-delay:calc(.6s + var(--i) * 75ms);transform-origin:50% 100%}
-.grow-js .hero.tree-grown .one,.grow-js .hero.no-tree .one{animation-name:ch-one;animation-duration:.5s;animation-delay:calc(1.45s + var(--i) * 38ms)}
-@keyframes ch-drop{0%{opacity:0;transform:translateY(-.9em) rotate(-8deg)}55%{opacity:1;transform:translateY(.07em) rotate(2deg)}75%{transform:translateY(-.08em) rotate(0)}100%{opacity:1;transform:none}}
-@keyframes ch-sprout{0%{opacity:0;transform:scaleY(0) translateY(.15em)}55%{opacity:1;transform:scaleY(1.14) rotate(-4deg)}78%{transform:scaleY(.96) rotate(2deg)}100%{opacity:1;transform:none}}
+.grow-js .hero.tree-grown .drop,.grow-js .hero.no-tree .drop,.grow-js .hero.tree-grown .sprout,.grow-js .hero.no-tree .sprout{animation-name:ch-pop;animation-duration:.6s;animation-timing-function:ease-out;transform-origin:50% 100%}
+.grow-js .hero.tree-grown .drop,.grow-js .hero.no-tree .drop{animation-delay:calc(var(--i) * 95ms)}
+.grow-js .hero.tree-grown .sprout,.grow-js .hero.no-tree .sprout{animation-delay:calc(.95s + var(--i) * 95ms)}
+.grow-js .hero.tree-grown .one,.grow-js .hero.no-tree .one{animation-name:ch-one;animation-duration:.45s;animation-delay:calc(1.95s + var(--i) * 34ms)}
+/* ポン：小さな粒から跳び上がってふくらみ、着地でつぶれて戻る。左右交互に少し傾く */
+@keyframes ch-pop{0%{opacity:0;transform:translateY(.35em) scale(.2)}35%{opacity:1;transform:translateY(-.32em) scale(1.18) rotate(calc(var(--r) * 8deg))}60%{transform:translateY(0) scale(1.12,.86) rotate(0)}78%{transform:translateY(-.06em) scale(.96,1.05)}100%{opacity:1;transform:none}}
 @keyframes ch-one{0%{opacity:0;transform:translateY(.4em)}100%{opacity:1;transform:none}}
 .hero.no-tree .grow{display:none}
 @media (prefers-reduced-motion:reduce){.grow-js .hero .wrap>:not(.grow){opacity:1;transform:none}.grow-js .hero .ch{opacity:1;animation:none!important}}

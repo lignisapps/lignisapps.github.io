@@ -162,7 +162,11 @@ function init(box) {
     const r = stage.getBoundingClientRect(); W = Math.max(1, r.width); H = Math.max(1, r.height);
     renderer.setSize(W, H, false); camera.aspect = W / H;
     const tanV = Math.tan((camera.fov * Math.PI) / 360), elev = 0.12;
-    const wide = W >= 768, bottomPad = Math.min(wide ? 270 : 190, H * (wide ? 0.32 : 0.24)), topPad = 28, baseY = H - bottomPad;
+    // 見出しと一言（名前の札〜一言の下）の高さを測り、その分だけ枠の下を空けて重ねる。一言まで最初の画面に入る（2026-11-20 本人）
+    const nm = hero.querySelector(".name"), sb = hero.querySelector(".hero-sub");
+    const textH = nm && sb ? sb.getBoundingClientRect().bottom - nm.getBoundingClientRect().top : 200;
+    const bottomPad = Math.round(Math.min(textH + 20, H * 0.45)); box.style.marginBottom = `-${bottomPad}px`;
+    const topPad = 28, baseY = H - bottomPad + 6;
     const D = Math.max((Ht / ((baseY - topPad) / H)) / (2 * tanV), (crownR * 2 / (W < 600 ? 1.3 : 0.94)) / (2 * tanV * camera.aspect));   // スマホは樹冠を左右に少しはみ出させる
     const ty = ((baseY - H / 2) / (H / 2)) * D * tanV;
     camera.position.set(0, ty + Math.sin(elev) * D, Math.cos(elev) * D); camera.lookAt(0, ty, 0);
