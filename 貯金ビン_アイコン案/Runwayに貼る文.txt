@@ -1,0 +1,20 @@
+貯金ビン（みんなで貯める目標別の貯金箱）のアイコン — Runway に貼る文
+どれか1つを「Describe an image or video...」に貼って、正方形（1:1）で作ってください。
+文字は入れない（App Store のアイコンは文字が読めないため）。
+
+━━ 1. みんなの硬貨が1つのビンに（いちばんおすすめ）
+App icon for a savings app, square 1:1, centered. A single glass mason jar, about half full of shiny gold coins. Three hands from different directions (left, right, top) each dropping one coin into the jar at the same time, hands in three different soft skin tones. Flat vector illustration, soft rounded shapes, gentle shadows, warm and friendly mood. Solid deep green background (#2A806A). No text, no letters, no numbers, no border. Simple enough to read at small size.
+
+━━ 2. 色の層（今のC案を絵にする）
+App icon for a shared savings jar app, square 1:1, centered. A rounded glass jar with a white lid, filled with colorful layers like sand art: yellow, coral orange, and sky blue layers stacked, each layer made of small round coins. One gold coin falling into the jar from above. Flat 3D style, soft lighting, glossy glass highlight, pastel colors. Solid deep green gradient background. No text, no letters, no numbers.
+
+━━ 3. かわいい豚ではなくビン（やさしい感じ）
+Cute app icon, square 1:1. A chubby round glass bottle with a cork, smiling face drawn softly on the glass, half filled with golden coins, small hearts and coins floating around it as if several people are saving together. Kawaii flat illustration, soft pastel palette, warm cream background. No text, no letters.
+
+━━ うまくいかない時に足す言葉
+- もっと単純に：minimal, fewer details, bold shapes
+- 文字が出てしまう：absolutely no text, no logos, no watermark
+- 手がこわい：stylized simple hands, mitten-like, no fingers detail
+- 色を変える：background color #F2994A (orange) / #4A90D9 (blue)
+
+できた絵は、ダウンロードしてこのフォルダに入れてください。私が 1024×1024 のアイコンに整えてアプリに入れます。

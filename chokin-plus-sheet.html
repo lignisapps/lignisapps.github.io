@@ -1,0 +1,131 @@
+<title>貯金ビンのプラス</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@700&display=swap">
+<style>
+/* layout: 1列の判断シート。上に決めること2つ、下に今の線引きの図と調べた値段 */
+:root{
+  --bg:#f4f7f5; --surface:#ffffff; --fg:#17231d; --muted:#56655c; --line:#d9e2dc;
+  --pick:#1f6e55; --pick-bg:#e2f1ea; --tag:#7a4a12; --tag-bg:#f6ead8; --free:#1f6e55; --paid:#a5621a;
+  --display:"Zen Kaku Gothic New","Noto Sans JP",system-ui,sans-serif; --body:"Noto Sans JP",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111814; --surface:#1a231e; --fg:#e5ede8; --muted:#97a69d; --line:#2b3730;
+  --pick:#7fd1ad; --pick-bg:#183428; --tag:#e5b578; --tag-bg:#3a2d1b; --free:#7fd1ad; --paid:#e8b06a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111814; --surface:#1a231e; --fg:#e5ede8; --muted:#97a69d; --line:#2b3730;
+  --pick:#7fd1ad; --pick-bg:#183428; --tag:#e5b578; --tag-bg:#3a2d1b; --free:#7fd1ad; --paid:#e8b06a; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1{font-family:var(--display);font-size:24px;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-size:18px;margin:0;text-wrap:balance}
+.lead{color:var(--muted);margin:4px 0 0}
+.go{background:var(--pick-bg);color:var(--pick);border:1px solid var(--pick);border-radius:12px;padding:12px 16px;font-weight:500}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.qhead{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.tag{font-size:12px;font-weight:700;letter-spacing:.04em;border-radius:999px;padding:2px 10px;background:var(--tag-bg);color:var(--tag)}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.opt{all:unset;box-sizing:border-box;cursor:pointer;border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.opt:focus-visible{outline:2px solid var(--pick);outline-offset:2px}
+.opt[aria-pressed="true"]{border-color:var(--pick);background:var(--pick-bg)}
+.opt .chg{font-size:13px;color:var(--muted)}
+.opt .rec{font-size:11px;font-weight:700;color:var(--pick);letter-spacing:.04em}
+.answer{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.answer code{font-family:var(--body);font-weight:500;flex:1;min-width:0}
+.answer button{font:inherit;font-weight:500;border:1px solid var(--pick);color:var(--pick);background:transparent;border-radius:8px;padding:4px 12px;cursor:pointer}
+.split{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.box h3{margin:0 0 6px;font-size:15px}
+.box.free h3{color:var(--free)} .box.paid h3{color:var(--paid)}
+ul{margin:0;padding-left:1.2em} li{margin:2px 0}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:13px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:700;color:var(--muted);font-size:12px}
+td.n{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.note{color:var(--muted);font-size:13px}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>貯金ビンの「プラス」に何を入れて、いくらにするか</h1>
+    <p class="lead">一押しの「ふたり・家族で貯める」を、どこまで無料にするかが一番の分かれ目です。どれを選んでも、12/13 までに入れた人は全部無料のままです。</p>
+  </header>
+
+  <div class="go">推奨のままなら「go」とだけ返事してください（共有は1つめのビンまで無料・2つめからプラス、入る側はいつも無料／¥600）。</div>
+
+  <section class="q" data-q="1">
+    <div class="qhead"><span class="tag">決めること 1</span><h2>「ふたり・家族で貯める」をどこまで無料にするか</h2></div>
+    <div class="opts">
+      <button class="opt" type="button" data-v="共有は1つめのビンまで無料" aria-pressed="true"><span class="rec">推奨</span><b>A 1つめの共有ビンまで無料、2つめからプラス</b><span class="chg">一押しはまず無料で試せる。2つ以上を共有したい人（旅行と家の頭金、など）が買う理由になる。<b>合言葉で入る側は、いつも無料</b>なので、相手を誘う時に止まらない</span></button>
+      <button class="opt" type="button" data-v="共有は全部無料" aria-pressed="false"><b>B 共有は全部無料</b><span class="chg">一番広まりやすい。そのかわりプラスの中身が「広告なし・ウィジェット・CSV」だけになり、買う理由は弱い</span></button>
+      <button class="opt" type="button" data-v="共有を作るのはプラスだけ" aria-pressed="false"><b>C 共有を作るのはプラスだけ</b><span class="chg">1本あたりの売上は一番見込める。ただ一押しを試す前に払うことになり、広まりにくい（入る側は無料）</span></button>
+    </div>
+  </section>
+
+  <section class="q" data-q="2">
+    <div class="qhead"><span class="tag">決めること 2</span><h2>プラス（買い切り）の値段</h2></div>
+    <div class="opts">
+      <button class="opt" type="button" data-v="¥600" aria-pressed="true"><span class="rec">推奨</span><b>A ¥600</b><span class="chg">似た貯金アプリの買い切り（¥480〜¥800）の真ん中。純アルコール手帳・ひと筆スイッチと同じ</span></button>
+      <button class="opt" type="button" data-v="¥500" aria-pressed="false"><b>B ¥500</b><span class="chg">作業ログと同じ。少し安め</span></button>
+      <button class="opt" type="button" data-v="¥800" aria-pressed="false"><b>C ¥800</b><span class="chg">つもり貯金と同じ。共有が入っている分、高めにつける</span></button>
+    </div>
+  </section>
+
+  <div class="answer"><code id="ans">go</code><button type="button" id="copy">返事をコピー</button></div>
+
+  <section style="display:flex;flex-direction:column;gap:10px">
+    <h2>推奨のままにした時の線引き</h2>
+    <div class="split">
+      <div class="box free"><h3>無料</h3><ul>
+        <li>目標のビンはいくつでも（似たアプリの「無料は3つまで」への答え）</li>
+        <li>入れる・使う・期限のペース・グラフ・記録の直し</li>
+        <li>iCloud の控え（データが消えない）</li>
+        <li>ふたり・家族で貯めるビンを1つ作る</li>
+        <li>合言葉でほかの人のビンに入る（いくつでも）</li>
+        <li>広告は画面の下のバナーだけ</li>
+      </ul></div>
+      <div class="box paid"><h3>プラス（買い切り）</h3><ul>
+        <li>ふたり・家族で貯めるビンを2つ以上作る</li>
+        <li>広告なし</li>
+        <li>ホーム画面のウィジェット</li>
+        <li>記録の書き出し（CSV）</li>
+      </ul></div>
+    </div>
+    <h2>調べたこと（2026-11-23、App Store 日本のページの表記）</h2>
+    <div class="tbl"><table>
+      <thead><tr><th>似たアプリ</th><th>評価の数</th><th>アプリ内課金の値段</th></tr></thead>
+      <tbody>
+        <tr><td>目標別「貯金箱」日記</td><td class="n">7,906</td><td>¥300・¥600・¥2,800（定額制あり。「定額制は使いづらい」の低評価）</td></tr>
+        <tr><td>超シンプル「貯金箱」</td><td class="n">4,512</td><td>¥600</td></tr>
+        <tr><td>貯金メモ</td><td class="n">2,157</td><td>¥480・¥980 ほか</td></tr>
+        <tr><td>シンプル「貯金箱」</td><td class="n">1,713</td><td>¥480・¥500・¥650（「広告非表示で650円」の低評価）</td></tr>
+        <tr><td>つもり貯金</td><td class="n">1,232</td><td>¥800</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">買い切りに当たりそうな値段はおおむね ¥480〜¥800、真ん中は ¥600 前後。ページの表記には定額制の値段も混ざるので目安です。</p>
+    <h2>今は聞かないこと</h2>
+    <ul class="note"><li>アプリの名前（仮「貯金ビン」）。ふたりで貯めるが入ったので、名前に入れるかを次に決めたい</li></ul>
+  </section>
+</div>
+
+<script>
+const rec={1:"共有は1つめのビンまで無料",2:"¥600"};
+const picks={...rec};
+const ans=document.getElementById('ans');
+function render(){
+  const same=[1,2].every(k=>picks[k]===rec[k]);
+  ans.textContent= same ? "go" : `共有＝${picks[1]}／値段＝${picks[2]}`;
+}
+document.querySelectorAll('.q').forEach(q=>{
+  const k=q.dataset.q;
+  q.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{
+    q.querySelectorAll('.opt').forEach(x=>x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true'); picks[k]=b.dataset.v; render();
+  }));
+});
+document.getElementById('copy').addEventListener('click',()=>{
+  navigator.clipboard.writeText(ans.textContent).catch(()=>{const r=document.createRange();r.selectNodeContents(ans);const s=getSelection();s.removeAllRanges();s.addRange(r);});
+});
+render();
+</script>
